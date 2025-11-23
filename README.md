@@ -37,7 +37,7 @@ Catch the moving light by pressing the button at just the right moment!
 - **ESP32 Development Board** (any variant)
 - **6x Push Buttons** (normally open, momentary)
 - **6x LEDs** (any color, 5mm recommended)
-- **6x 1kΩ Resistors** (for LEDs)
+- **6x 220Ω Resistors** (for LEDs)
 - **Breadboard and Jumper Wires**
 - **Power Supply** (USB or 5V adapter)
 
@@ -54,32 +54,74 @@ Catch the moving light by pressing the button at just the right moment!
 
 ## 📋 Software Requirements
 
-- Arduino IDE (1.8.x or 2.x)
+- **PlatformIO** (recommended) or **Arduino IDE**
 - ESP32 Board Package
-- Required Libraries:
+- Libraries (auto-installed with PlatformIO):
   - `WiFi.h` (included with ESP32 package)
   - `WebServer.h` (included with ESP32 package)
 
+## 📁 Project Structure
+
+```
+esp32-game-box/
+├── src/
+│   └── main.cpp          # Main source code
+├── platformio.ini        # PlatformIO configuration
+└── README.md            # This file
+```
+
 ## 🚀 Installation
 
-### 1. Install Arduino IDE
-Download from [arduino.cc](https://www.arduino.cc/en/software)
+### Option 1: PlatformIO (Recommended)
 
-### 2. Add ESP32 Board Support
-1. Open Arduino IDE
-2. Go to `File` → `Preferences`
-3. Add to "Additional Board Manager URLs":
-   ```
-   https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-   ```
-4. Go to `Tools` → `Board` → `Boards Manager`
-5. Search "ESP32" and install "esp32 by Espressif Systems"
+1. **Install PlatformIO**
+   - Install [VS Code](https://code.visualstudio.com/)
+   - Install PlatformIO extension from VS Code marketplace
 
-### 3. Upload the Code
-1. Open the `.ino` file in Arduino IDE
-2. Select your ESP32 board: `Tools` → `Board` → `ESP32 Arduino` → (your board)
-3. Select the correct port: `Tools` → `Port`
-4. Click **Upload** button
+2. **Setup Project**
+   ```bash
+   # Clone the repository
+   git clone https://github.com/urcauz/esp32-game-box.git
+   cd esp32-game-box
+   
+   # PlatformIO will auto-install dependencies
+   ```
+
+3. **Configure platformio.ini** (if not already present)
+   ```ini
+   [env:esp32dev]
+   platform = espressif32
+   board = esp32dev
+   framework = arduino
+   monitor_speed = 115200
+   ```
+
+4. **Upload to ESP32**
+   - Connect ESP32 via USB
+   - Click "Upload" button in PlatformIO toolbar
+   - Or use command: `pio run --target upload`
+
+### Option 2: Arduino IDE
+
+1. **Install Arduino IDE**
+   - Download from [arduino.cc](https://www.arduino.cc/en/software)
+
+2. **Add ESP32 Board Support**
+   - Open Arduino IDE
+   - Go to `File` → `Preferences`
+   - Add to "Additional Board Manager URLs":
+     ```
+     https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+     ```
+   - Go to `Tools` → `Board` → `Boards Manager`
+   - Search "ESP32" and install "esp32 by Espressif Systems"
+
+3. **Upload the Code**
+   - Rename `src/main.cpp` to `main.ino` (Arduino IDE requires .ino extension)
+   - Open the `.ino` file in Arduino IDE
+   - Select your ESP32 board: `Tools` → `Board` → `ESP32 Arduino` → (your board)
+   - Select the correct port: `Tools` → `Port`
+   - Click **Upload** button
 
 ### 4. Connect to ESP32
 1. Power on your ESP32
@@ -110,7 +152,7 @@ Two options available:
 ## 🛠️ Configuration
 
 ### WiFi Settings
-Edit these lines in the code to change network credentials:
+Edit these lines in `src/main.cpp` to change network credentials:
 ```cpp
 const char* ssid = "ESP32-GameHub";      // Network name
 const char* password = "game1234";        // Network password
@@ -166,9 +208,19 @@ Adjust timing parameters in individual game update functions to modify difficult
 - Clear browser cache
 - Check serial monitor for errors
 
+### PlatformIO Upload Issues
+- Ensure correct board selected in `platformio.ini`
+- Try holding BOOT button during upload
+- Check USB cable (use data cable, not charge-only)
+- Verify correct COM port selected
+
 ## 🔍 Serial Monitor
 
-Open serial monitor (115200 baud) to see:
+**PlatformIO:** Click "Monitor" button or run `pio device monitor`
+
+**Arduino IDE:** Open serial monitor (115200 baud)
+
+You'll see:
 - WiFi AP status
 - IP address confirmation
 - HTTP server status
@@ -191,10 +243,12 @@ The system provides REST API endpoints:
 - Add sound effects with a buzzer
 - Implement difficulty levels
 - Create multiplayer modes
-- Add score persistence
+- Add score persistence with EEPROM
 - Design custom enclosure
 - Add RGB LEDs for color effects
 - Create tournament mode
+- Add OLED display for scores
+- Implement web-based leaderboard
 
 ## 📄 License
 
@@ -206,19 +260,29 @@ Contributions, issues, and feature requests are welcome! Feel free to check issu
 
 ## 👨‍💻 Author
 
-urcauz
+**urcauz**
+
+GitHub: [@urcauz](https://github.com/urcauz)
 
 ## 🙏 Acknowledgments
 
 - Built with ESP32 Arduino Core
 - Inspired by classic arcade games
 - UI design influenced by modern web trends
+- Powered by PlatformIO
 
 ## 📸 Screenshots
 
+
 [![Screenshot-from-2025-11-23-18-52-59.png](https://i.postimg.cc/rmgP69xv/Screenshot-from-2025-11-23-18-52-59.png)](https://postimg.cc/Ppp4YY64)
+
+
 [![Screenshot-from-2025-11-23-18-53-05.png](https://i.postimg.cc/gJBHqtvx/Screenshot-from-2025-11-23-18-53-05.png)](https://postimg.cc/vgfnGz2y)
+
+
 [![Screenshot-from-2025-11-23-18-53-12.png](https://i.postimg.cc/BncycstD/Screenshot-from-2025-11-23-18-53-12.png)](https://postimg.cc/dh34wb2t)
+
+
 [![Screenshot-from-2025-11-23-18-57-35.png](https://i.postimg.cc/W3r0gpb7/Screenshot-from-2025-11-23-18-57-35.png)](https://postimg.cc/VrfSc8tS)
 
 ---
